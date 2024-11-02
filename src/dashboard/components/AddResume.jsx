@@ -1,18 +1,39 @@
 import { Button } from "@/components/ui/button";
-import { PlusSquare } from "lucide-react";
+import { Loader2, PlusSquare } from "lucide-react";
 import React, { useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { Input } from "@/components/ui/input";
 import { v4 as uuidv4 } from "uuid";
+import { useUser } from "@clerk/clerk-react";
+import { firestore, collection, addDoc } from "@/config/firebase"; // Import Firestore functions
 
 function AddResume() {
   const [openDialog, setOpenDialog] = useState(false);
   const [resumeTitle, setResumeTitle] = useState();
+  const { user } = useUser();
+  const [loading, setLoading] = useState(false);
 
-  const onCreate = () => {
+  const onCreate = async () => {
+    setLoading(true);
+
     const uuid = uuidv4();
-    console.log(resumeTitle);
-    console.log(uuid);
+    const data = {
+      title: resumeTitle,
+      resumeID: uuid,
+      userEmail: user?.primaryEmailAddress?.emailAddress,
+      userName: user?.fullName,
+    };
+
+    try {
+      // Add data to the Firestore collection "resumes"
+      await addDoc(collection(firestore, "resumes"), data);
+      console.log("Resume added successfully!");
+      setOpenDialog(false);
+      setLoading(false); // Close dialog after success
+    } catch (error) {
+      setLoading(false);
+      console.error("Error adding resume:", error);
+    }
   };
 
   return (
@@ -25,10 +46,10 @@ function AddResume() {
       </div>
 
       {openDialog && (
-        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center ">
+        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
           <div className="bg-white p-6 rounded-md shadow-lg w-1/2 relative">
-            <div className="flex  justify-between">
-              <h2 className="text-lg font-semibold ">Create a New Resume</h2>
+            <div className="flex justify-between">
+              <h2 className="text-lg font-semibold">Create a New Resume</h2>
               <div className="cursor-pointer p-1 rounded-md hover:scale-105 hover:border border-black">
                 <IoMdClose onClick={() => setOpenDialog(false)} />
               </div>
@@ -51,10 +72,10 @@ function AddResume() {
               </Button>
               <Button
                 className="bg-green-500 hover:bg-green-700 border-none"
-                disabled={!resumeTitle}
+                disabled={!resumeTitle || loading}
                 onClick={() => onCreate()}
               >
-                Create
+                {loading ? <Loader2 className="animate-spin" /> : "Create"}
               </Button>
             </div>
           </div>
