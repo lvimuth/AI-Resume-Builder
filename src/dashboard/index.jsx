@@ -28,7 +28,7 @@ function Dashboard() {
       <p className="text-gray-500">
         Start Creating AI resume to your next <span>JOB ROLE</span>
       </p>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-10">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-10 gap-5">
         <AddResume />
         {resumeList.length > 0 &&
           resumeList.map((resume, index) => (

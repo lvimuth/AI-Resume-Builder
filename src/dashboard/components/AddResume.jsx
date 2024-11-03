@@ -6,30 +6,35 @@ import { Input } from "@/components/ui/input";
 import { v4 as uuidv4 } from "uuid";
 import { useUser } from "@clerk/clerk-react";
 import { firestore, collection, addDoc } from "@/config/firebase"; // Import Firestore functions
+import { useNavigate } from "react-router-dom";
 
 function AddResume() {
   const [openDialog, setOpenDialog] = useState(false);
   const [resumeTitle, setResumeTitle] = useState();
   const { user } = useUser();
   const [loading, setLoading] = useState(false);
+  const navigation = useNavigate();
+
 
   const onCreate = async () => {
     setLoading(true);
 
-    const uuid = uuidv4();
     const data = {
       title: resumeTitle,
-      resumeID: uuid,
       userEmail: user?.primaryEmailAddress?.emailAddress,
       userName: user?.fullName,
     };
 
     try {
       // Add data to the Firestore collection "resumes"
-      await addDoc(collection(firestore, "resumes"), data);
+      const docRef = await addDoc(collection(firestore, "resumes"), data);
       console.log("Resume added successfully!");
+      
+      // Use Firestore document ID in the navigation path
+      navigation("/dashboard/resume/" + docRef.id + "/edit");
+
       setOpenDialog(false);
-      setLoading(false); // Close dialog after success
+      setLoading(false);
     } catch (error) {
       setLoading(false);
       console.error("Error adding resume:", error);
