@@ -29,7 +29,7 @@ function Summary({ enableNext }) {
   const GenerateSummaryFromAI = async () => {
     setLoading(true);
     const PROMPT = prompt.replace("{jobTitle}", resumeInfo?.jobTitle);
-    console.log(PROMPT);
+    console.log(resumeInfo);
 
     try {
       const result = await AIChatSession.sendMessage(PROMPT);
@@ -66,7 +66,6 @@ function Summary({ enableNext }) {
     } finally {
       setLoading(false);
     }
-    console.log("Resume Info", resumeInfo?.firstName);
   };
 
   return (
@@ -91,6 +90,7 @@ function Summary({ enableNext }) {
           <Textarea
             className="mt-5"
             required
+            defaultValue={resumeInfo.summary}
             value={summary} // Bind Textarea to summary state
             onChange={(e) => setSummary(e.target.value)}
           />

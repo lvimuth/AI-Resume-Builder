@@ -60,7 +60,6 @@ function PersonalDetails({ enableNext }) {
     } finally {
       setLoading(false);
     }
-    console.log("Resume Info", resumeInfo?.firstName);
   };
 
   return (
@@ -76,7 +75,7 @@ function PersonalDetails({ enableNext }) {
             <Input
               name="firstName"
               required
-              // defaultValue={resumeInfo?.firstName}
+              defaultValue={resumeInfo?.firstName}
               onChange={handleInputChange}
             />
           </div>
@@ -87,7 +86,7 @@ function PersonalDetails({ enableNext }) {
             <Input
               name="lastName"
               required
-              // defaultValue={resumeInfo.lastName}
+              defaultValue={resumeInfo?.lastName}
               onChange={handleInputChange}
             />
           </div>
@@ -98,7 +97,7 @@ function PersonalDetails({ enableNext }) {
             <Input
               name="jobTitle"
               required
-              // defaultValue={resumeInfo.jobTitle}
+              defaultValue={resumeInfo?.jobTitle}
               onChange={handleInputChange}
             />
           </div>
@@ -109,7 +108,7 @@ function PersonalDetails({ enableNext }) {
             <Input
               name="address"
               required
-              // defaultValue={resumeInfo.address}
+              defaultValue={resumeInfo?.address}
               onChange={handleInputChange}
             />
           </div>
@@ -120,7 +119,7 @@ function PersonalDetails({ enableNext }) {
             <Input
               name="phone"
               required
-              // defaultValue={resumeInfo.phone}
+              defaultValue={resumeInfo?.phone}
               onChange={handleInputChange}
             />
           </div>
@@ -131,7 +130,7 @@ function PersonalDetails({ enableNext }) {
             <Input
               name="email"
               required
-              // defaultValue={resumeInfo.email}
+              defaultValue={resumeInfo?.email}
               onChange={handleInputChange}
             />
           </div>

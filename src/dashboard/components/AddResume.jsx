@@ -15,7 +15,6 @@ function AddResume() {
   const [loading, setLoading] = useState(false);
   const navigation = useNavigate();
 
-
   const onCreate = async () => {
     setLoading(true);
 
@@ -28,8 +27,9 @@ function AddResume() {
     try {
       // Add data to the Firestore collection "resumes"
       const docRef = await addDoc(collection(firestore, "resumes"), data);
+      console.log(docRef.id);
       console.log("Resume added successfully!");
-      
+
       // Use Firestore document ID in the navigation path
       navigation("/dashboard/resume/" + docRef.id + "/edit");
 
