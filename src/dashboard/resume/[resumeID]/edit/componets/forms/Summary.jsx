@@ -11,17 +11,19 @@ import { AIChatSession } from "@/service/AIModel";
 function Summary({ enableNext }) {
   const { resumeInfo, setResumeInfo } = useContext(ResumeInfoContext);
   const [loading, setLoading] = useState(false);
-  const [summary, setSummary] = useState();
+  const [summary, setSummary] = useState("");
   const params = useParams();
   const [aiGeneratedSummaryList, setAiGeneratedSummaryList] = useState();
   const prompt =
     "{jobTitle}, Depends on job title give me a summary for my resume within 4-5 lines to just copy paste.the response should be in JSON format and with field experience Level and summary with experience level for fresher, mid-level and experience level";
+
   useEffect(() => {
-    summary &&
+    if (summary) {
       setResumeInfo({
         ...resumeInfo,
         summery: summary,
       });
+    }
   }, [summary]);
 
   const GenerateSummaryFromAI = async () => {
@@ -89,6 +91,7 @@ function Summary({ enableNext }) {
           <Textarea
             className="mt-5"
             required
+            value={summary} // Bind Textarea to summary state
             onChange={(e) => setSummary(e.target.value)}
           />
           <div className="mt-2 flex justify-end">
@@ -99,15 +102,14 @@ function Summary({ enableNext }) {
         </form>
       </div>
       {aiGeneratedSummaryList && (
-        <div>
+        <div className="mt-5">
           <h2 className="font-bold text-lg">Suggestions</h2>
           {aiGeneratedSummaryList.map((item, index) => (
             <div
               key={index}
               className="rounded-lg border-black bg-gray-100 p-4 mt-4 hover:scale-105 shadow-lg"
+              onClick={() => setSummary(item.summary)} // Set summary on click
             >
-              {" "}
-              {/* Add key prop here */}
               <h2 className="font-bold my-1">Level: {item?.experienceLevel}</h2>
               <p>{item.summary}</p>
             </div>
