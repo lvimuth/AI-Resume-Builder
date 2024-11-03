@@ -1,7 +1,30 @@
 // globalApi.jsx
 import axios from "axios";
 import { firestore } from "@/config/firebase";
-import { collection, query, where, getDocs, doc, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
+
+const GetResumeById = async (resumeID) => {
+  try {
+    const resumeRef = doc(firestore, "resumes", resumeID);
+    const resumeDoc = await getDocs(resumeRef);
+    if (resumeDoc.exists()) {
+      return resumeDoc.data();
+    } else {
+      console.log("No such document!");
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching resume by ID:", error);
+    throw error;
+  }
+};
 
 // Replace with your Firebase Realtime Database URL
 const firebaseBaseURL =
@@ -23,17 +46,15 @@ const GetUserResumes = async (userEmail) => {
   try {
     const resumesRef = collection(firestore, "resumes");
     const q = query(resumesRef, where("userEmail", "==", userEmail));
-    
+
     const querySnapshot = await getDocs(q);
     // Map over the query results to return an array of resume data
     const resumes = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }));
-    console.log(resumes)
     return resumes;
   } catch (error) {
-    console.error("Error retrieving resumes:", error);
     throw error;
   }
 };
@@ -43,11 +64,9 @@ const UpdateResume = async (resumeID, updatedData) => {
   try {
     const resumeRef = doc(firestore, "resumes", resumeID);
     await updateDoc(resumeRef, updatedData);
-    console.log("Resume updated successfully!");
   } catch (error) {
-    console.error("Error updating resume:", error);
     throw error;
   }
 };
 
-export default { GetUserResumes,UpdateResume  };
+export default { GetUserResumes, UpdateResume, GetResumeById };
