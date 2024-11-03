@@ -5,7 +5,7 @@ import { ArrowLeft, ArrowRight, LayoutGrid } from "lucide-react";
 import Summary from "./forms/Summary";
 
 function FormSection() {
-  const [activeFormIndex, setActiveFormIndex] = useState(2);
+  const [activeFormIndex, setActiveFormIndex] = useState(1);
   const [enableNext, setEnableNext] = useState(false);
   return (
     <div>
