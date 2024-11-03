@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import { BrainCircuit, LoaderCircle } from "lucide-react";
 import { toast } from "sonner";
 import { AIChatSession } from "@/service/AIModel";
+import dummy from "@/data/dummy";
 
 function Summary({ enableNext }) {
   const { resumeInfo, setResumeInfo } = useContext(ResumeInfoContext);
@@ -23,7 +24,7 @@ function Summary({ enableNext }) {
         ...resumeInfo,
         summery: summary,
       });
-    }
+    }else{setResumeInfo(dummy);}
   }, [summary]);
 
   const GenerateSummaryFromAI = async () => {
