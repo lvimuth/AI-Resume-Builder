@@ -1,5 +1,7 @@
 // globalApi.jsx
 import axios from "axios";
+import { firestore } from "@/config/firebase";
+import { collection, query, where, getDocs } from "firebase/firestore";
 
 // Replace with your Firebase Realtime Database URL
 const firebaseBaseURL =
@@ -14,4 +16,26 @@ const globalApi = axios.create({
   },
 });
 
-export default globalApi;
+// globalApi.jsx
+
+// Function to get user resumes from Firestore by email
+const GetUserResumes = async (userEmail) => {
+  try {
+    const resumesRef = collection(firestore, "resumes");
+    const q = query(resumesRef, where("userEmail", "==", userEmail));
+    
+    const querySnapshot = await getDocs(q);
+    // Map over the query results to return an array of resume data
+    const resumes = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    console.log(resumes)
+    return resumes;
+  } catch (error) {
+    console.error("Error retrieving resumes:", error);
+    throw error;
+  }
+};
+
+export default { GetUserResumes };
