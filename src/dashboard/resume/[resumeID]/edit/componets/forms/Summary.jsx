@@ -107,7 +107,7 @@ function Summary({ enableNext }) {
           {aiGeneratedSummaryList.map((item, index) => (
             <div
               key={index}
-              className="rounded-lg border-black bg-gray-100 p-4 mt-4 hover:scale-105 shadow-lg"
+              className="rounded-lg cursor-pointer border-black bg-gray-100 p-4 mt-4 hover:scale-105 shadow-lg"
               onClick={() => setSummary(item.summary)} // Set summary on click
             >
               <h2 className="font-bold my-1">Level: {item?.experienceLevel}</h2>
