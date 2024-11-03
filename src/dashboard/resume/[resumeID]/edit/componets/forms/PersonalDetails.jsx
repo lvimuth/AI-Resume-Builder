@@ -14,13 +14,13 @@ function PersonalDetails({ enableNext }) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Fetch the resume data from Firestore when the component mounts
     const fetchResumeData = async () => {
       try {
         const resumeData = await GlobalApi.GetResumeById(params.resumeID);
+
         if (resumeData) {
-          setFormData(resumeData); // Set formData to fetched data
-          setResumeInfo(resumeData); // Update context with fetched data
+          setFormData(resumeData);
+          setResumeInfo(resumeData);
         }
       } catch (error) {
         console.error("Error fetching resume data:", error);

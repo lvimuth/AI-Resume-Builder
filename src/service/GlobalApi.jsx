@@ -1,6 +1,6 @@
 // globalApi.jsx
 import axios from "axios";
-import { firestore } from "@/config/firebase";
+import { firebaseApp } from "@/config/firebase";
 import {
   collection,
   query,
@@ -8,21 +8,22 @@ import {
   getDocs,
   doc,
   updateDoc,
+  getFirestore,
+  getDoc,
 } from "firebase/firestore";
 
+const firestore = getFirestore(firebaseApp);
+
 const GetResumeById = async (resumeID) => {
-  try {
-    const resumeRef = doc(firestore, "resumes", resumeID);
-    const resumeDoc = await getDocs(resumeRef);
-    if (resumeDoc.exists()) {
-      return resumeDoc.data();
-    } else {
-      console.log("No such document!");
-      return null;
-    }
-  } catch (error) {
-    console.error("Error fetching resume by ID:", error);
-    throw error;
+  const docRef = doc(firestore, "resumes", resumeID);
+
+  // Reference to specific document
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    return docSnap.data(); // Return the document data
+  } else {
+    throw new Error("No document found with the specified ID");
   }
 };
 

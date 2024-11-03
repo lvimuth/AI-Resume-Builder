@@ -1,9 +1,8 @@
+// firebase.jsx
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
+// Firebase configuration
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_PUBLIC_APIKEY,
   authDomain: import.meta.env.VITE_PUBLIC_AUTHDOMAIN,
@@ -13,7 +12,9 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_PUBLIC_APPID,
 };
 
-const app = initializeApp(firebaseConfig);
-const firestore = getFirestore(app);
+// Initialize Firebase
+const firebaseApp = initializeApp(firebaseConfig);
+const firestore = getFirestore(firebaseApp);
 
-export { firestore, collection, addDoc };
+// Export both firebaseApp and firestore
+export { firebaseApp, firestore, collection, addDoc };

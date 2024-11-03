@@ -1,13 +1,34 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import PersonalDetails from "./forms/PersonalDetails";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight, LayoutGrid } from "lucide-react";
 import Summary from "./forms/Summary";
 import Experience from "./forms/Experience";
+import { ResumeInfoContext } from "@/context/ResumeContext";
+import GlobalApi from "@/service/GlobalApi";
+import { useParams } from "react-router-dom";
 
 function FormSection() {
+  const { resumeInfo, setResumeInfo } = useContext(ResumeInfoContext);
   const [activeFormIndex, setActiveFormIndex] = useState(1);
   const [enableNext, setEnableNext] = useState(false);
+  const params = useParams();
+
+  useEffect(() => {
+    const fetchResumeData = async () => {
+      try {
+        const resumeData = await GlobalApi.GetResumeById(params.resumeID);
+
+        if (resumeData) {
+          setResumeInfo(resumeData);
+        }
+      } catch (error) {
+        console.error("Error fetching resume data:", error);
+      }
+    };
+
+    fetchResumeData();
+  }, [params.resumeID, setResumeInfo]);
   return (
     <div>
       {/* Personal Details */}
