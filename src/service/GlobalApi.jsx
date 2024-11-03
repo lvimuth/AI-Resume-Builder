@@ -1,7 +1,7 @@
 // globalApi.jsx
 import axios from "axios";
 import { firestore } from "@/config/firebase";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs, doc, updateDoc } from "firebase/firestore";
 
 // Replace with your Firebase Realtime Database URL
 const firebaseBaseURL =
@@ -38,4 +38,16 @@ const GetUserResumes = async (userEmail) => {
   }
 };
 
-export default { GetUserResumes };
+// Function to update a specific resume document in Firestore
+const UpdateResume = async (resumeID, updatedData) => {
+  try {
+    const resumeRef = doc(firestore, "resumes", resumeID);
+    await updateDoc(resumeRef, updatedData);
+    console.log("Resume updated successfully!");
+  } catch (error) {
+    console.error("Error updating resume:", error);
+    throw error;
+  }
+};
+
+export default { GetUserResumes,UpdateResume  };

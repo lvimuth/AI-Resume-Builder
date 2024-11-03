@@ -1,15 +1,31 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ResumeInfoContext } from "@/context/ResumeContext";
-import React, { useContext } from "react";
+import GlobalApi from "@/service/GlobalApi";
+import { LoaderCircle } from "lucide-react";
+import React, { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 function PersonalDetails({ enableNext }) {
+  const params = useParams();
   const { resumeInfo, setResumeInfo } = useContext(ResumeInfoContext);
+  const [formData, setFormData] = useState();
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    console.log(params);
+  }, []);
 
   const handleInputChange = (event) => {
     enableNext(false);
 
     const { name, value } = event.target;
+    setFormData((formData) => ({
+      ...formData,
+      [name]: value,
+    }));
+    set;
+
     setResumeInfo((resumeInfo) => ({
       ...resumeInfo,
       [name]: value,
@@ -17,7 +33,18 @@ function PersonalDetails({ enableNext }) {
   };
   const onSave = (event) => {
     event.preventDefault();
-    enableNext(true);
+    setLoading(true);
+    const data = formData;
+
+    try {
+      GlobalApi.UpdateResume(params.resumeID, data);
+      console.log("Resume updated successfully!");
+      enableNext(true);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error updating resume:", error);
+      setLoading(false);
+    }
   };
 
   return (
@@ -64,7 +91,9 @@ function PersonalDetails({ enableNext }) {
           </div>
         </div>
         <div className="mt-3 flex justify-end">
-          <Button type="submit">Save</Button>
+          <Button type="submit" disabled={loading}>
+            {loading ? <LoaderCircle className="animate-spin" /> : "Save"}
+          </Button>
         </div>
       </form>
     </div>
