@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import RichTextEditor from "../RichTextEditor";
+import { ResumeInfoContext } from "@/context/ResumeContext";
 
 const formFiels = {
   title: "",
@@ -10,11 +11,12 @@ const formFiels = {
   city: "",
   startDate: "",
   endDate: "",
-  skills: "",
-  summary: "",
+  summery: "",
 };
 function Experience() {
   const [experienceList, setExperienceList] = useState([formFiels]);
+
+  const { resumeInfo, setResumeInfo } = useContext(ResumeInfoContext);
 
   const handleChange = (index, event) => {
     const newEntries = experienceList.slice();
@@ -24,7 +26,10 @@ function Experience() {
   };
 
   useEffect(() => {
-    console.log(experienceList);
+    setResumeInfo({
+      ...resumeInfo,
+      experience: experienceList,
+    });
   }, [experienceList]);
 
   const AddNewExperience = () => {
@@ -34,6 +39,13 @@ function Experience() {
   const RemoveExperience = () => {
     setExperienceList((experienceList) => experienceList.slice(0, -1));
   };
+
+  const handleRichTextEditor = (e, name, index) => {
+    const newEntries = experienceList.slice();
+    newEntries[index][name] = e.target.value;
+    setExperienceList(newEntries);
+  };
+
   return (
     <div>
       <div className="p-5 shadow-lg rounded-lg border-t-primary border-t-4 mt-10">
@@ -41,7 +53,7 @@ function Experience() {
         <p>Add your previous experience</p>
         <div>
           {experienceList.map((item, index) => (
-            <div className="mt-5">
+            <div className="mt-5" key={index}>
               <div className="grid grid-cols-2 gap-3 border p-3 rounded-lg">
                 <div className="col-span-2">
                   <label htmlFor="" className="text-xs ">
@@ -92,18 +104,14 @@ function Experience() {
                 </div>
                 <div className="col-span-2">
                   <label htmlFor="" className="text-xs ">
-                    Skills
-                  </label>
-                  <Input
-                    name="skills"
-                    onChange={(event) => handleChange(index, event)}
-                  />
-                </div>
-                <div className="col-span-2">
-                  <label htmlFor="" className="text-xs ">
                     Summary
                   </label>
-                  <RichTextEditor />
+                  <RichTextEditor
+                    index={index}
+                    onRichTextEditorChange={(event) =>
+                      handleRichTextEditor(event, "workSummery", index)
+                    }
+                  />
                 </div>
               </div>
             </div>
