@@ -60,10 +60,9 @@ function RichTextEditor({ onRichTextEditorChange, index }) {
         </div>
         <EditorProvider>
           <Editor
-            value={value}
+            value={experience}
             onChange={(e) => {
               setValue(e.target.value);
-              value = { experience };
               onRichTextEditorChange(e);
               setExperience(e.target.value);
             }}
