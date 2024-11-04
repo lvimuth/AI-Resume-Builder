@@ -1,12 +1,15 @@
 import React from "react";
+import dummy from "@/data/dummy";
 
 function PersonalDetailPreview({ resumeInfo }) {
+  const themeColor = resumeInfo?.themeColor || dummy.themeColor; // Fallback to dummy theme color if not set
+  console.log(resumeInfo);
   return (
     <div>
       <h2
         className="font-bold text-xl text-center"
         style={{
-          color: resumeInfo?.themeColor,
+          color: themeColor,
         }}
       >
         {resumeInfo?.firstName} {resumeInfo?.lastName}
@@ -17,7 +20,7 @@ function PersonalDetailPreview({ resumeInfo }) {
       <h2
         className="text-center font-normal text-xs "
         style={{
-          color: resumeInfo?.themeColor,
+          color: themeColor,
         }}
       >
         {resumeInfo?.address}
@@ -26,7 +29,7 @@ function PersonalDetailPreview({ resumeInfo }) {
         <h2
           className="font-normal text-xs"
           style={{
-            color: resumeInfo?.themeColor,
+            color: themeColor,
           }}
         >
           {resumeInfo?.phone}
@@ -34,7 +37,7 @@ function PersonalDetailPreview({ resumeInfo }) {
         <h2
           className="font-normal text-xs"
           style={{
-            color: resumeInfo?.themeColor,
+            color: themeColor,
           }}
         >
           {resumeInfo?.email}
@@ -43,7 +46,7 @@ function PersonalDetailPreview({ resumeInfo }) {
       <hr
         className="border-[1.5px] my-2"
         style={{
-          borderColor: resumeInfo?.themeColor,
+          borderColor: themeColor,
         }}
       />
     </div>

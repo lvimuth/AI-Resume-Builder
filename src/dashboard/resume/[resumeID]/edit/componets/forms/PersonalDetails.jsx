@@ -18,10 +18,18 @@ function PersonalDetails({ enableNext }) {
       try {
         const resumeData = await GlobalApi.GetResumeById(params.resumeID);
 
-        if (resumeData) {
-          setFormData(resumeData);
-          setResumeInfo(resumeData);
-        }
+        const filledResumeData = {
+          firstName: resumeData?.firstName || dummy.firstName,
+          lastName: resumeData?.lastName || dummy.lastName,
+          jobTitle: resumeData?.jobTitle || dummy.jobTitle,
+          address: resumeData?.address || dummy.address,
+          phone: resumeData?.phone || dummy.phone,
+          email: resumeData?.email || dummy.email,
+          themeColor: resumeData?.themeColor || dummy.themeColor,
+        };
+
+        setFormData(filledResumeData);
+        setResumeInfo(filledResumeData);
       } catch (error) {
         console.error("Error fetching resume data:", error);
       }
