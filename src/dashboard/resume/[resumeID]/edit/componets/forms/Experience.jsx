@@ -25,7 +25,7 @@ function Experience() {
 
   useEffect(() => {
     console.log(experienceList);
-  }, [setExperienceList]);
+  }, [experienceList]);
 
   const AddNewExperience = () => {
     setExperienceList([...experienceList, formFiels]);

@@ -7,7 +7,7 @@ import {
   Toolbar,
 } from "react-simple-wysiwyg";
 
-function RichTextEditor() {
+function RichTextEditor({ onRichTextEditorChange }) {
   const [value, setValue] = useState();
   return (
     <div>
@@ -16,6 +16,7 @@ function RichTextEditor() {
           value={value}
           onChange={() => {
             setValue(e.target.value);
+            onRichTextEditorChange(e);
           }}
         >
           <Toolbar>
